@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0BA05C">
+<title>Ajude a Maria Cecília a vencer o câncer | Vaquinha</title>
+<meta name="description" content="Maria Cecília tem 7 anos e está lutando contra a leucemia. Ajude com o tratamento, transporte e estadia longe de casa.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect x='1.5' y='2.5' width='27' height='21' rx='6' fill='%230BA05C'/%3E%3Cpath d='M9 23.5V29l6.5-5.5z' fill='%230BA05C'/%3E%3Cpath d='M9.5 9.5 15 18l5.5-8.5' stroke='%23fff' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --green:#0BA05C; --green-dark:#08854B; --green-soft:#E8F7EF;
+    --ink:#1C1C1C; --muted:#6B7280; --line:#E5E7EB; --bg:#F5F6F7; --white:#fff;
+    --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+    --shadow-lg:0 10px 30px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:Inter,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  input,select,textarea{font-family:inherit;font-size:16px}
+  :focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:6px}
+  .topbar{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+  .topbar-in{max-width:1120px;margin:0 auto;padding:0 16px;height:64px;display:flex;align-items:center;gap:16px}
+  .logo{display:flex;align-items:center;flex-shrink:0;gap:7px}
+  .logo svg{flex-shrink:0}
+  .logo-word{font-size:23px;font-weight:800;color:var(--green);letter-spacing:-.9px;line-height:1}
+  .search{flex:1;max-width:420px;position:relative}
+  .search input{width:100%;height:40px;border:1px solid var(--line);border-radius:20px;padding:0 16px 0 40px;background:var(--bg);outline:none}
+  .search input:focus{border-color:var(--green);background:var(--white);box-shadow:0 0 0 3px var(--green-soft)}
+  .search svg{position:absolute;left:14px;top:11px;width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:2}
+  .nav{display:flex;align-items:center;gap:6px;margin-left:auto}
+  .nav>a{font-size:14px;font-weight:600;color:var(--muted);padding:8px 10px;border-radius:8px;white-space:nowrap}
+  .nav>a:hover{color:var(--green);background:var(--green-soft)}
+  .btn-create{background:var(--green);color:#fff!important;padding:9px 16px!important;border-radius:8px}
+  .btn-create:hover{background:var(--green-dark);color:#fff!important}
+  .btn-login{border:1px solid var(--line);color:var(--ink)!important}
+  .auth-slot{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .hamb{display:none;width:42px;height:42px;border-radius:8px;place-items:center;border:1px solid var(--line)}
+  .hamb svg{width:20px;height:20px;stroke:var(--ink);stroke-width:2;fill:none}
+  .user{display:flex;align-items:center;gap:8px;padding:5px 10px 5px 5px;border:1px solid var(--line);border-radius:24px;cursor:pointer;position:relative}
+  .user:hover{border-color:var(--green)}
+  .user-name{font-size:13px;font-weight:600;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .avatar.sm{width:28px;height:28px;font-size:11px}
+  .menu{position:absolute;right:0;top:52px;background:var(--white);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-lg);width:230px;padding:8px;display:none}
+  .menu.on{display:block}
+  .menu-head{padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:6px}
+  .menu-head b{display:block;font-size:13px}
+  .menu-head span{font-size:12px;color:var(--muted);word-break:break-all}
+  .menu a{display:block;padding:9px 10px;border-radius:8px;font-size:14px;font-weight:500}
+  .menu a:hover{background:var(--bg)}
+  .menu a.danger{color:#C02626}
+  .wrap{max-width:1120px;margin:0 auto;padding:20px 16px 80px}
+  .crumb{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .crumb a:hover{color:var(--green)}
+  .grid{display:grid;grid-template-columns:1fr 372px;grid-template-areas:"head aside" "body aside";gap:0 32px;align-items:start}
+  .head{grid-area:head;min-width:0}
+  .body{grid-area:body;min-width:0}
+  .aside{grid-area:aside;position:sticky;top:84px}
+  .tag{display:inline-block;background:var(--green-soft);color:var(--green-dark);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+  h1{font-size:32px;line-height:1.25;font-weight:800;letter-spacing:-.5px;margin-bottom:14px}
+  .organizer{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin-bottom:20px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0}
+  .organizer b{color:var(--ink)}
+  .verified{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-weight:600;font-size:13px}
+  .gallery{position:relative;border-radius:var(--radius);overflow:hidden;background:#DFE3E6;box-shadow:var(--shadow);margin-bottom:24px}
+  .gallery img{width:100%;aspect-ratio:4/3;object-fit:cover}
+  .gallery-cap{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-size:13px}
+  .progress-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+  .bar{height:12px;background:#E9EBEE;border-radius:20px;overflow:hidden;margin-bottom:12px}
+  .bar span{display:block;height:100%;background:var(--green);border-radius:20px;transition:width .8s ease}
+  .values{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+  .raised{font-size:24px;font-weight:800;color:var(--green-dark)}
+  .goal{font-size:14px;color:var(--muted)}
+  .stats{display:flex;gap:24px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+  .stats b{display:block;color:var(--ink);font-size:16px;font-weight:700}
+  .trust{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin:0 0 28px;padding-left:2px}
+  .trust span{display:inline-flex;align-items:center;gap:5px}
+  .trust b{color:var(--green);font-size:14px}
+  .story{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);margin-bottom:28px}
+  .story h2{font-size:19px;font-weight:700;margin-bottom:18px}
+  .story p{font-size:16px;color:#333;margin-bottom:16px}
+  .story p:last-of-type{margin-bottom:0}
+  .story .sig{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+  .story .sig b{color:var(--ink)}
+  .hl{background:#FFF6D9;padding:1px 3px;border-radius:3px}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:28px}
+  .panel h2{font-size:17px;font-weight:700;margin-bottom:16px}
+  .donation{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .donation:last-child{border-bottom:0;padding-bottom:0}
+  .donation .avatar{background:#DFF3E8;color:var(--green-dark)}
+  .donation-body{flex:1;min-width:0}
+  .donation-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .donation-head b{font-size:14px}
+  .donation-head .amt{color:var(--green-dark);font-weight:800;font-size:14px;white-space:nowrap}
+  .donation p{font-size:14px;color:#444;margin-top:2px}
+  .donation time{font-size:12px;color:var(--muted)}
+  .comment{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .comment:last-child{border-bottom:0;padding-bottom:0}
+  .comment .avatar{background:#EEE}
+  .comment-body{flex:1;min-width:0}
+  .comment-body b{font-size:14px}
+  .comment-body p{font-size:14px;color:#444;margin-top:2px}
+  .comment time{font-size:12px;color:var(--muted)}
+  .reply{margin-left:46px;margin-top:10px;padding-left:14px;border-left:2px solid var(--green-soft)}
+  .reply .badge{background:var(--green-soft);color:var(--green-dark);font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:6px}
+  .update{padding:16px 0;border-bottom:1px solid var(--line)}
+  .update:last-child{border-bottom:0;padding-bottom:0}
+  .update .when{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .update p{font-size:15px;color:#333}
+  .donate-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-lg)}
+  .donate-card h2{font-size:18px;font-weight:700;margin-bottom:4px}
+  .donate-card .sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+  .presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+  .presets button{height:46px;border:1.5px solid var(--line);border-radius:8px;background:var(--white);font-weight:700;font-size:15px;color:var(--ink);transition:.15s}
+  .presets button:hover{border-color:var(--green);color:var(--green)}
+  .presets button.on{background:var(--green-soft);border-color:var(--green);color:var(--green-dark)}
+  .field{margin-bottom:10px}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+  .field input{width:100%;height:44px;border:1px solid var(--line);border-radius:8px;padding:0 12px;outline:none}
+  .field input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+  .money{position:relative}
+  .money span{position:absolute;left:12px;top:12px;color:var(--muted);font-weight:600}
+  .money input{padding-left:36px;font-weight:700}
+  .btn-donate{width:100%;height:52px;background:var(--green);color:#fff;border-radius:8px;font-size:16px;font-weight:700;margin-top:6px;transition:.15s}
+  .btn-donate:hover{background:var(--green-dark)}
+  .btn-donate:disabled{background:#B9C2BD;cursor:not-allowed}
+  .err{font-size:12.5px;color:#C02626;margin-top:8px;display:none}
+  .err.on{display:block}
+  .secure{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--muted);margin-top:12px}
+  .share{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;gap:8px}
+  .share button{flex:1;height:40px;border:1px solid var(--line);border-radius:8px;background:var(--white);font-size:13px;font-weight:600;color:var(--muted)}
+  .share button:hover{border-color:var(--green);color:var(--green)}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;overflow-y:auto}
+  .overlay.on{display:flex}
+  .modal{background:var(--white);border-radius:16px;width:100%;max-width:400px;padding:24px;text-align:center;max-height:92vh;overflow:auto;position:relative}
+  .modal-x{position:absolute;right:12px;top:10px;width:34px;height:34px;font-size:22px;color:var(--muted);border-radius:50%}
+  .modal-x:hover{background:var(--bg)}
+  .modal h3{font-size:18px;font-weight:700;margin-bottom:4px}
+  .modal .amt-big{font-size:30px;font-weight:800;color:var(--green-dark);margin:6px 0 14px}
+  .qr-box{width:200px;height:200px;margin:0 auto 12px;border:1px solid var(--line);border-radius:12px;display:grid;place-items:center;padding:10px;background:#fff}
+  .qr-box img,.qr-box canvas{width:100%;height:100%;object-fit:contain}
+  .copy{display:flex;gap:8px;margin-bottom:12px}
+  .copy input{flex:1;height:42px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:12px;color:var(--muted);min-width:0}
+  .copy button{padding:0 14px;height:42px;background:var(--ink);color:#fff;border-radius:8px;font-size:13px;font-weight:600}
+  .timer{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .timer b{color:#C02626}
+  .modal-note{font-size:12px;color:var(--muted);background:var(--bg);padding:10px;border-radius:8px;margin-bottom:14px;text-align:left}
+  .btn-ghost{width:100%;height:44px;border:1px solid var(--line);border-radius:8px;background:var(--white);font-weight:600;font-size:14px}
+  .demo{display:none;margin-top:10px;font-size:13px;font-weight:700;color:#8A6D00;background:#FFF6D9;border:1px dashed #E0C860;border-radius:8px;padding:10px;width:100%}
+  .demo.on{display:block}
+  .ok-icon{width:64px;height:64px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center;margin:8px auto 16px;font-size:32px}
+  .auth-head{display:flex;align-items:center;justify-content:center;gap:7px;margin:4px 0 18px}
+  .auth-head .logo-word{font-size:20px}
+  .tabs{display:flex;background:var(--bg);border-radius:10px;padding:4px;margin-bottom:18px}
+  .tabs button{flex:1;height:38px;border-radius:8px;font-size:14px;font-weight:600;color:var(--muted)}
+  .tabs button.on{background:var(--white);color:var(--ink);box-shadow:var(--shadow)}
+  .auth .field label{text-align:left}
+  .terms{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--muted);text-align:left;margin:12px 0}
+  .terms input{margin-top:2px;accent-color:var(--green);width:16px;height:16px;flex-shrink:0}
+  .auth-foot{font-size:12.5px;color:var(--muted);margin-top:14px}
+  .auth-foot a{color:var(--green);font-weight:600}
+  .camp-card{display:flex;gap:12px;text-align:left;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:6px}
+  .camp-card div{font-size:13px;color:var(--muted)}
+  .camp-card b{display:block;font-size:14px;color:var(--ink)}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:290px;max-width:85vw;background:var(--white);z-index:210;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;padding:16px}
+  .drawer.on{transform:translateX(0)}
+  .drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:205;display:none}
+  .drawer-bg.on{display:block}
+  .drawer-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .drawer nav{display:flex;flex-direction:column;gap:2px;flex:1}
+  .drawer nav a{padding:13px 12px;border-radius:8px;font-size:15px;font-weight:600}
+  .drawer nav a:hover{background:var(--bg)}
+  .drawer-foot{display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid var(--line)}
+  .drawer-foot a{height:46px;display:grid;place-items:center;border-radius:8px;font-weight:700;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:12px 20px;border-radius:24px;z-index:300;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  footer{background:var(--white);border-top:1px solid var(--line);padding:36px 16px;margin-top:20px}
+  .foot-in{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;font-size:13px;color:var(--muted)}
+  .foot-in b{color:var(--ink);display:block;margin-bottom:8px;font-size:13px}
+  .foot-in a{display:block;margin-bottom:6px}
+  .foot-in a:hover{color:var(--green)}
+  .copy-foot{max-width:1120px;margin:24px auto 0;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
+  .mobile-bar{display:none}
+  @media(max-width:900px){
+    .grid{grid-template-columns:1fr;grid-template-areas:"head" "aside" "body";gap:0}
+    .aside{position:static;margin-bottom:28px}
+    .head{margin-bottom:28px}
+    h1{font-size:26px}
+    .search{display:none}
+    .nav{display:none}
+    .hamb{display:grid}
+    .auth-slot{margin-left:auto}
+    .auth-slot .btn-login,.auth-slot .btn-create{display:none}
+    .user-name{display:none}
+    .user{padding:4px;border:0}
+    .story{padding:20px}
+    .panel{padding:18px}
+    .mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--white);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:12px;align-items:center;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
+    .mobile-bar .raised{font-size:17px}
+    .mobile-bar button{flex:1;height:46px;background:var(--green);color:#fff;border-radius:8px;font-weight:700;font-size:15px}
+    .wrap{padding-bottom:96px}
+    .toast{bottom:100px}
+  }
+  @media(min-width:901px){
+    .drawer,.drawer-bg{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="/" class="logo">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+        <rect x="1.5" y="2.5" width="27" height="21" rx="6" fill="#0BA05C"/>
+        <path d="M9 23.5V29l6.5-5.5z" fill="#0BA05C"/>
+        <path d="M9.5 9.5 15 18l5.5-8.5" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-word">vakinha</span>
+    </a>
+
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" placeholder="Buscar vaquinha" aria-label="Buscar vaquinha">
+    </div>
+
+    <nav class="nav">
+      <a href="#">Vaquinhas</a>
+      <a href="#">Vakinha da Sorte</a>
+    </nav>
+
+    <div class="auth-slot" id="authSlot"></div>
+
+    <button class="hamb" id="hamb" aria-label="Abrir menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="crumb"><a href="/">Início</a> › <a href="#">Saúde</a> › Maria Cecília</div>
+
+  <div class="grid">
+    <div class="head">
+      <span class="tag">Saúde</span>
+      <h1>Ajude a Maria Cecília, de 7 anos, a vencer a leucemia</h1>
+
+      <div class="organizer">
+        <div class="avatar">CA</div>
+        <div>
+          Organizado por <b>Carlos Almeida</b> — pai da Maria Cecília
+          <div class="verified">✓ Campanha verificada</div>
+        </div>
+      </div>
+
+      <div class="gallery">
+        <img src="poster.jpg" alt="Maria Cecília sorrindo com o pôster da campanha">
+        <div class="gallery-cap">Maria Cecília, 7 anos — em tratamento contra a LLA desde março</div>
+      </div>
+
+      <div class="progress-card">
+        <div class="bar"><span id="bar" style="width:15%"></span></div>
+        <div class="values">
+          <div class="raised" id="raised">R$ 7.412</div>
+          <div class="goal">de R$ 48.000</div>
+        </div>
+        <div class="stats">
+          <div><b id="donors">143</b> doadores</div>
+          <div><b>60</b> dias restantes</div>
+          <div><b>15%</b> da meta</div>
+        </div>
+      </div>
+
+      <div class="trust">
+        <span><b>✓</b> Campanha verificada</span>
+        <span><b>✓</b> Pix cai na hora</span>
+        <span><b>✓</b> 100% vai para o tratamento</span>
+      </div>
+    </div>
+
+    <aside class="aside">
+      <div class="donate-card">
+        <h2>Doe agora</h2>
+        <p class="sub">Doação via Pix, cai na hora. Mínimo R$ 10.</p>
+
+        <div class="presets" id="presets">
+          <button data-v="10">R$ 10</button>
+          <button data-v="20">R$ 20</button>
+          <button data-v="50" class="on">R$ 50</button>
+          <button data-v="100">R$ 100</button>
+          <button data-v="200">R$ 200</button>
+          <button data-v="outro">Outro</button>
+        </div>
+
+        <div class="field money">
+          <span>R$</span>
+          <input id="valor" type="text" inputmode="decimal" value="50,00" placeholder="0,00" aria-label="Valor da doação">
+        </div>
+
+        <div class="field">
+          <label for="nome">Seu nome</label>
+          <input id="nome" type="text" placeholder="Como quer aparecer">
+        </div>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" placeholder="seu@email.com">
+        </div>
+        <div class="field">
+          <label for="cpf">CPF</label>
+          <input id="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" maxlength="14">
+        </div>
+        <div class="field">
+          <label for="fone">WhatsApp</label>
+          <input id="fone" type="text" inputmode="numeric" placeholder="(00) 00000-0000" maxlength="15">
+        </div>
+
+        <button class="btn-donate" id="btnDoar">Doar com Pix</button>
+        <div class="err" id="err"></div>
+
+        <div class="secure">🔒 Pagamento processado pela StratonBot</div>
+
+        <div class="share">
+          <button data-share="wa">WhatsApp</button>
+          <button data-share="fb">Facebook</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="body">
+      <article class="story">
+        <h2>Nossa história</h2>
+
+        <p>Eu sempre achei que sabia o que era cansaço. Cansaço é voltar do segundo emprego às onze da noite. Cansaço é conta de luz. Aí, em março, a Maria Cecília começou a ficar com sono demais, e num domingo ela subiu no meu colo e disse que a perna doía "por dentro".</p>
+
+        <p>Três dias depois eu estava de pé num corredor de hospital, com um papel na mão, ouvindo uma médica falar a palavra que ninguém quer ouvir: <span class="hl">leucemia</span>. Linfoblástica aguda. Ela tinha 7 anos, um vestido de unicórnio e um dente caindo. Eu tinha 34 e nenhuma ideia de como consertar aquilo.</p>
+
+        <p>A Maria Cecília é a criança que canta no carro. É a que faz o irmão mais velho rir quando ele chega da escola de mau humor. É a que desenhou a família inteira — inclusive o cachorro, inclusive o portão — e colou na porta da geladeira. Hoje a geladeira tem três desenhos novos e todos têm uma menina careca de laço na cabeça. Ela desenha assim porque foi assim que ela ficou.</p>
+
+        <p>A quimioterapia vem em ciclos. Nos dias bons ela quer brincar. Nos dias ruins ela fica deitada de barriga pra cima, com o urso de pelúcia que ela chama de Téo, e pede pra eu contar a mesma história do dragão que tinha medo de fogo. Eu conto. Conto quantas vezes ela pedir.</p>
+
+        <p>O tratamento é em outra cidade. São <span class="hl">430 km de estrada</span> a cada ida e volta, e a gente vai de carro porque ônibus com criança imunossuprimida é risco. Eu parei de trabalhar em março — não tem como consertar telhado e estar no hospital ao mesmo tempo. Minha esposa ficou com a casa e o irmão dele, e a conta não fecha desde então.</p>
+
+        <p>O que a gente precisa é chão, e é por isso que estou aqui pedindo. Remédio que o SUS não cobre, exame que não entra no protocolo, a estadia perto do hospital, o combustível, a alimentação de quase dois meses. Nada disso é luxo: é o que separa a minha filha do próximo ciclo.</p>
+
+        <p>A Maria Cecília fez uma promessa no mês passado, com toda a seriedade de quem tem 7 anos: quando crescer, vai ser médica pra "consertar as crianças". Eu não duvido. Ela tem a força que eu não tenho. O que ela não tem é tempo de esperar a burocracia.</p>
+
+        <p>Se você puder doar R$ 10, doa. Se não puder, compartilha — compartilhar é de graça e chega mais longe do que eu consigo sozinho. E se você chegou até aqui, obrigado por ter lido até o fim. Pouca gente lê até o fim.</p>
+
+        <div class="sig">
+          <b>Carlos Almeida</b><br>
+          Pai da Maria Cecília, 7 anos — LLA em tratamento
+        </div>
+      </article>
+
+      <section class="panel">
+        <h2>Atualizações (2)</h2>
+        <div class="update">
+          <div class="when">há 3 dias</div>
+          <p>Segundo ciclo concluído. Ela passou dois dias bem enjoada, mas hoje já pediu pra desenhar. Obrigado a todo mundo que doou essa semana — conseguimos pagar a estadia até o dia 20.</p>
+        </div>
+        <div class="update">
+          <div class="when">há 11 dias</div>
+          <p>Exames de controle deram resultado estável. A médica falou que a resposta está dentro do esperado e que o protocolo continua. Foi a melhor notícia do mês.</p>
+        </div>
+      </section>
+
+      <section class="panel" id="doacoes">
+        <h2>Doações recentes</h2>
+        <div class="donation"><div class="avatar">MA</div><div class="donation-body">
+          <div class="donation-head"><b>Marcos A.</b><span class="amt">R$ 50</span></div>
+          <p>Força, Maria Cecília! O Téo precisa de você.</p>
+          <time>há 8 minutos</time></div></div>
+        <div class="donation"><div class="avatar">JS</div><div class="donation-body">
+          <div class="donation-head"><b>Juliana S.</b><span class="amt">R$ 20</span></div>
+          <time>há 34 minutos</time></div></div>
+        <div class="donation"><div class="avatar">RL</div><div class="donation-body">
+          <div class="donation-head"><b>Anônimo</b><span class="amt">R$ 100</span></div>
+          <p>Deus abençoe essa guerreira.</p>
+          <time>há 1 hora</time></div></div>
+        <div class="donation"><div class="avatar">PF</div><div class="donation-body">
+          <div class="donation-head"><b>Paulo F.</b><span class="amt">R$ 10</span></div>
+          <time>há 2 horas</time></div></div>
+        <div class="donation"><div class="avatar">CM</div><div class="donation-body">
+          <div class="donation-head"><b>Camila M.</b><span class="amt">R$ 30</span></div>
+          <p>Mandei pro grupo da igreja.</p>
+          <time>há 4 horas</time></div></div>
+      </section>
+
+      <section class="panel">
+        <h2>Comentários (4)</h2>
+        <div class="comment"><div class="avatar">AC</div><div class="comment-body">
+          <b>Ana Cláudia</b> <time>há 3 horas</time>
+          <p>Chorei lendo. Já compartilhei no grupo da família.</p>
+          <div class="reply"><b>Carlos</b><span class="badge">Organizador</span> <time>há 2 horas</time>
+            <p>Obrigado, Ana. De verdade.</p></div>
+        </div></div>
+        <div class="comment"><div class="avatar">TM</div><div class="comment-body">
+          <b>Tiago M.</b> <time>há 5 horas</time>
+          <p>Mandei um pix e vou mandar de novo mês que vem. Melhoras pra ela.</p>
+        </div></div>
+        <div class="comment"><div class="avatar">BO</div><div class="comment-body">
+          <b>Bianca O.</b> <time>ontem</time>
+          <p>O Téo é o urso mais sortudo do mundo por ter ela.</p>
+        </div></div>
+        <div class="comment"><div class="avatar">DS</div><div class="comment-body">
+          <b>Diego S.</b> <time>ontem</time>
+          <p>Vai dar certo, Carlos. Segura firme.</p>
+        </div></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="mobile-bar">
+  <div><div class="raised" id="mRaised">R$ 7.412</div><div style="font-size:11px;color:#6B7280">de R$ 48.000</div></div>
+  <button id="mDoar">Doar agora</button>
+</div>
+
+<footer>
+  <div class="foot-in">
+    <div><b>Vaquinha</b><a href="#">Como funciona</a><a href="#">Criar vaquinha</a><a href="#">Vaquinhas em alta</a></div>
+    <div><b>Ajuda</b><a href="#">Central de ajuda</a><a href="#">Taxas e prazos</a><a href="#">Fale conosco</a></div>
+    <div><b>Legal</b><a href="#">Termos de uso</a><a href="#">Privacidade</a><a href="#">Cookies</a></div>
+    <div><b>Redes</b><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a></div>
+  </div>
+  <div class="copy-foot">
+    <span>© 2026 Vaquinha — Campanha organizada por Carlos Almeida</span>
+    <span><a href="#">Denunciar campanha</a> · Pagamentos processados pela StratonBot</span>
+  </div>
+</footer>
+<div class="drawer-bg" id="drawerBg"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-top">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 30 30" fill="none">
+        <rect x="1.5" y="2.5" width="27" height="21" rx="6" fill="#0BA05C"/>
+        <path d="M9 23.5V29l6.5-5.5z" fill="#0BA05C"/>
+        <path d="M9.5 9.5 15 18l5.5-8.5" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-word" style="font-size:20px">vakinha</span>
+    </div>
+    <button class="modal-x" style="position:static" id="drawerX" aria-label="Fechar menu">×</button>
+  </div>
+  <nav>
+    <a href="#">Vaquinhas</a>
+    <a href="#">Vakinha da Sorte</a>
+    <a href="#">Como funciona</a>
+    <a href="#">Central de ajuda</a>
+  </nav>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="overlay" id="authOverlay">
+  <div class="modal auth">
+    <button class="modal-x" id="authX" aria-label="Fechar">×</button>
+    <div class="auth-head">
+      <svg width="26" height="26" viewBox="0 0 30 30" fill="none">
+        <rect x="1.5" y="2.5" width="27" height="21" rx="6" fill="#0BA05C"/>
+        <path d="M9 23.5V29l6.5-5.5z" fill="#0BA05C"/>
+        <path d="M9.5 9.5 15 18l5.5-8.5" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-word">vakinha</span>
+    </div>
+
+    <div class="tabs">
+      <button data-tab="login" class="on">Entrar</button>
+      <button data-tab="signup">Criar conta</button>
+    </div>
+
+    <form id="formLogin" novalidate>
+      <div class="field"><label for="lEmail">E-mail</label><input id="lEmail" type="email" placeholder="seu@email.com" autocomplete="email"></div>
+      <div class="field"><label for="lSenha">Senha</label><input id="lSenha" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <div class="err" id="lErr"></div>
+      <button class="btn-donate" type="submit">Entrar</button>
+      <p class="auth-foot"><a href="#" id="esqueci">Esqueci minha senha</a></p>
+    </form>
+
+    <form id="formSignup" hidden novalidate>
+      <div class="field"><label for="sNome">Nome completo</label><input id="sNome" type="text" placeholder="Seu nome" autocomplete="name"></div>
+      <div class="field"><label for="sEmail">E-mail</label><input id="sEmail" type="email" placeholder="seu@email.com" autocomplete="email"></div>
+      <div class="field"><label for="sCpf">CPF</label><input id="sCpf" type="text" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"></div>
+      <div class="field"><label for="sFone">WhatsApp</label><input id="sFone" type="text" inputmode="numeric" placeholder="(00) 00000-0000" maxlength="15"></div>
+      <div class="field"><label for="sSenha">Senha</label><input id="sSenha" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password"></div>
+      <label class="terms"><input type="checkbox" id="sTermos"> Li e aceito os <a href="#">Termos de uso</a> e a <a href="#">Política de privacidade</a>.</label>
+      <div class="err" id="sErr"></div>
+      <button class="btn-donate" type="submit">Criar conta</button>
+    </form>
+  </div>
+</div>
+
+<div class="overlay" id="campOverlay">
+  <div class="modal" style="text-align:left">
+    <button class="modal-x" id="campX" aria-label="Fechar">×</button>
+    <h3 style="text-align:center;margin-bottom:16px">Minhas vaquinhas</h3>
+    <div class="camp-card">
+      <div class="avatar" style="background:#DFF3E8;color:#08854B">MC</div>
+      <div><b>Ajude a Maria Cecília</b>R$ 7.412 de R$ 48.000</div>
+    </div>
+    <button class="btn-donate" style="margin-top:16px" id="campFechar">Ver campanha</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CONFIG = {
+  MIN: 10,
+  MAX: 5000,
+  GOAL: 48000,
+  RAISED: 7412,
+  DONORS: 143,
+  PROXY_URL: '/api/charge',
+  POLL_URL:  '/api/status'
+};
+const DEMO = !CONFIG.PROXY_URL;
+
+const el = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const brl = n => Number(n || 0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const state = { valor: 50, charge: null, timer: null, poll: null, pago: false, restantes: 0, tentativas: 0 };
+
+const LS_A = 'vk_accounts', LS_S = 'vk_session';
+const ler = (k, f) => { try { return JSON.parse(localStorage.getItem(k)) ?? f } catch { return f } };
+const gravar = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+function hashSync(s){ let h = 5381; for (let i=0;i<s.length;i++) h = ((h<<5)+h+s.charCodeAt(i))>>>0; return 'x'+h.toString(16) }
+async function hash(s){
+  if (!(crypto && crypto.subtle)) return hashSync(s);
+  const b = new TextEncoder().encode(s);
+  const d = await crypto.subtle.digest('SHA-256', b);
+  return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+let toastT;
+function toast(msg){
+  const t = el('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600);
+}
+
+const maskCpf = v => v.replace(/\D/g,'').slice(0,11)
+  .replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+const maskFone = v => v.replace(/\D/g,'').slice(0,11)
+  .replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+
+[el('cpf'), el('sCpf')].forEach(i => i.addEventListener('input', e => e.target.value = maskCpf(e.target.value)));
+[el('fone'), el('sFone')].forEach(i => i.addEventListener('input', e => e.target.value = maskFone(e.target.value)));
+
+function cpfValido(v){
+  const c = String(v || '').replace(/\D/g,'');
+  if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+  let s = 0;
+  for (let i=0;i<9;i++) s += +c[i] * (10-i);
+  let d1 = (s*10) % 11; if (d1 === 10) d1 = 0;
+  if (d1 !== +c[9]) return false;
+  s = 0;
+  for (let i=0;i<10;i++) s += +c[i] * (11-i);
+  let d2 = (s*10) % 11; if (d2 === 10) d2 = 0;
+  return d2 === +c[10];
+}
+
+el('valor').addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g,'').replace(/^0+/,'');
+  e.target.value = v ? (parseInt(v,10)/100).toFixed(2).replace('.',',') : '';
+});
+
+document.querySelectorAll('#presets button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#presets button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    if (b.dataset.v === 'outro') { el('valor').value = ''; el('valor').focus(); return; }
+    state.valor = +b.dataset.v;
+    el('valor').value = (+b.dataset.v).toFixed(2).replace('.',',');
+    erro('');
+  });
+});
+
+function erro(msg){ const e = el('err'); e.textContent = msg; e.classList.toggle('on', !!msg); }
+
+function iniciais(nome){
+  const n = String(nome || '').trim() || 'Anônimo';
+  return n.split(/\s+/).slice(0,2).map(p => p[0].toUpperCase()).join('');
+}
+function renderAuth(){
+  const s = ler(LS_S, null);
+  const slot = el('authSlot'), foot = el('drawerFoot');
+  if (!s) {
+    slot.innerHTML = `<a href="#" class="btn-login" data-auth="login">Entrar</a>
+                      <a href="#" class="btn-create" data-auth="signup">Criar vaquinha</a>`;
+    foot.innerHTML = `<a href="#" class="btn-login" data-auth="login">Entrar</a>
+                      <a href="#" class="btn-create" data-auth="signup">Criar vaquinha</a>`;
+  } else {
+    slot.innerHTML = `<div class="user" id="userBtn" role="button" tabindex="0" aria-expanded="false">
+        <div class="avatar sm">${esc(iniciais(s.nome))}</div>
+        <span class="user-name">${esc(s.nome.split(' ')[0])}</span>
+        <div class="menu" id="userMenu">
+          <div class="menu-head"><b>${esc(s.nome)}</b><span>${esc(s.email)}</span></div>
+          <a href="#" data-menu="campanhas">Minhas vaquinhas</a>
+          <a href="#" data-menu="dados">Meus dados</a>
+          <a href="#" data-menu="sair" class="danger">Sair</a>
+        </div>
+      </div>`;
+    foot.innerHTML = `<a href="#" data-menu="campanhas" style="background:var(--bg)">Minhas vaquinhas</a>
+                      <a href="#" data-menu="sair" style="border:1px solid var(--line)">Sair da conta</a>`;
+  }
+}
+
+function abrirAuth(tab){
+  el('authOverlay').classList.add('on');
+  trocarTab(tab || 'login');
+}
+function trocarTab(tab){
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  el('formLogin').hidden = tab !== 'login';
+  el('formSignup').hidden = tab !== 'signup';
+  el('lErr').classList.remove('on'); el('sErr').classList.remove('on');
+  setTimeout(() => (tab === 'login' ? el('lEmail') : el('sNome')).focus(), 60);
+}
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => trocarTab(b.dataset.tab));
+el('authX').onclick = () => el('authOverlay').classList.remove('on');
+el('campX').onclick = el('campFechar').onclick = () => el('campOverlay').classList.remove('on');
+el('authOverlay').addEventListener('click', e => { if (e.target === el('authOverlay')) el('authOverlay').classList.remove('on') });
+el('campOverlay').addEventListener('click', e => { if (e.target === el('campOverlay')) el('campOverlay').classList.remove('on') });
+
+el('formSignup').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = el('sErr');
+  const nome = el('sNome').value.trim(), email = el('sEmail').value.trim().toLowerCase();
+  const cpf = el('sCpf').value.replace(/\D/g,''), senha = el('sSenha').value;
+
+  if (nome.split(/\s+/).length < 2) return falha(err, 'Informe nome e sobrenome.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return falha(err, 'E-mail inválido.');
+  if (cpf.length !== 11) return falha(err, 'CPF incompleto.');
+  if (senha.length < 8) return falha(err, 'A senha precisa de 8 caracteres ou mais.');
+  if (!el('sTermos').checked) return falha(err, 'Aceite os termos para continuar.');
+
+  const contas = ler(LS_A, []);
+  if (contas.some(c => c.email === email)) return falha(err, 'Este e-mail já tem conta. Tente entrar.');
+  if (contas.some(c => c.cpf === cpf)) return falha(err, 'Este CPF já tem conta. Tente entrar.');
+
+  contas.push({ nome, email, cpf, fone: el('sFone').value.replace(/\D/g,''), senha: await hash(senha), criado: Date.now() });
+  gravar(LS_A, contas);
+  gravar(LS_S, { nome, email, cpf, fone: el('sFone').value.replace(/\D/g,'') });
+
+  el('authOverlay').classList.remove('on');
+  el('formSignup').reset();
+  renderAuth();
+  toast('Conta criada. Bem-vindo(a), ' + nome.split(' ')[0] + '!');
+});
+
+el('formLogin').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = el('lErr');
+  const email = el('lEmail').value.trim().toLowerCase(), senha = el('lSenha').value;
+  if (!email || !senha) return falha(err, 'Preencha e-mail e senha.');
+
+  const contas = ler(LS_A, []);
+  const conta = contas.find(c => c.email === email);
+  if (!conta || conta.senha !== await hash(senha)) return falha(err, 'E-mail ou senha incorretos.');
+
+  gravar(LS_S, { nome: conta.nome, email: conta.email, cpf: conta.cpf, fone: conta.fone });
+  el('authOverlay').classList.remove('on');
+  el('formLogin').reset();
+  renderAuth();
+  toast('Bem-vindo(a) de volta, ' + conta.nome.split(' ')[0] + '!');
+});
+
+function falha(box, msg){ box.textContent = msg; box.classList.add('on'); }
+
+el('esqueci').onclick = e => {
+  e.preventDefault();
+  falha(el('lErr'), 'Enviamos um link de recuperação para o seu e-mail.');
+};
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-auth]');
+  if (a) { e.preventDefault(); abrirAuth(a.dataset.auth); fecharDrawer(); return; }
+
+  const m = e.target.closest('[data-menu]');
+  if (m) {
+    e.preventDefault();
+    const acao = m.dataset.menu;
+    if (acao === 'sair') { localStorage.removeItem(LS_S); renderAuth(); toast('Você saiu da conta.'); }
+    if (acao === 'campanhas') el('campOverlay').classList.add('on');
+    if (acao === 'dados') toast('Seus dados estão salvos neste dispositivo.');
+    fecharDrawer();
+    return;
+  }
+
+  const u = e.target.closest('#userBtn');
+  if (u) {
+    const menu = el('userMenu');
+    if (menu) { menu.classList.toggle('on'); u.setAttribute('aria-expanded', menu.classList.contains('on')); }
+    return;
+  }
+  if (!e.target.closest('.user')) {
+    const menu = el('userMenu');
+    if (menu) menu.classList.remove('on');
+  }
+
+  const sh = e.target.closest('[data-share]');
+  if (sh) compartilhar(sh.dataset.share);
+});
+
+function abrirDrawer(){ el('drawer').classList.add('on'); el('drawerBg').classList.add('on') }
+function fecharDrawer(){ el('drawer').classList.remove('on'); el('drawerBg').classList.remove('on') }
+el('hamb').onclick = abrirDrawer;
+el('drawerX').onclick = fecharDrawer;
+el('drawerBg').onclick = fecharDrawer;
+
+el('mDoar').onclick = () => document.querySelector('.donate-card').scrollIntoView({behavior:'smooth'});
+
+function validar(){
+  const v = parseFloat(el('valor').value.replace(',','.')) || 0;
+  state.valor = v;
+  if (v < CONFIG.MIN) return 'O valor mínimo é R$ 10,00.';
+  if (v > CONFIG.MAX) return 'O valor máximo por Pix é R$ 5.000,00.';
+  if (el('nome').value.trim().length < 3) return 'Informe seu nome.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el('email').value)) return 'E-mail inválido.';
+  if (!cpfValido(el('cpf').value)) return 'CPF inválido. Confira os números.';
+  if (el('fone').value.replace(/\D/g,'').length < 10) return 'WhatsApp incompleto.';
+  return '';
+}
+
+el('btnDoar').addEventListener('click', async () => {
+  const msg = validar();
+  if (msg) return erro(msg);
+  erro('');
+  el('btnDoar').disabled = true;
+  el('btnDoar').textContent = 'Gerando Pix...';
+  state.restantes = 0;
+  state.tentativas = 0;
+  try {
+    const charge = await criarCobranca({
+      amount: Number(state.valor.toFixed(2)),
+      reference: 'mc-' + Date.now() + '-' + Math.random().toString(36).slice(2,6),
+      payer: { name: el('nome').value.trim(), email: el('email').value,
+               document: el('cpf').value.replace(/\D/g,''),
+               phone: el('fone').value.replace(/\D/g,'') }
+    });
+    state.charge = charge;
+    state.pago = false;
+    abrirModal(charge);
+  } catch (e) { erro('Falha: ' + e.message); }
+  finally { el('btnDoar').disabled = false; el('btnDoar').textContent = 'Doar com Pix'; }
+});
+
+async function criarCobranca(payload){
+  if (DEMO) {
+    await new Promise(r => setTimeout(r, 700));
+    return {
+      id: 'demo_' + Math.random().toString(36).slice(2,10),
+      emv: '00020126580014BR.GOV.BCB.PIX0136' + (crypto.randomUUID ? crypto.randomUUID() : Date.now()) +
+           '5204000053039865802BR5925MARIA CECILIA VAQUINHA6009SAO PAULO62070503***6304' + Math.floor(Math.random()*9999),
+      qr_url: '',
+      checkout_url: '',
+      aguardando: false,
+      amount: payload.amount,
+      expires_in: 900
+    };
+  }
+  const r = await fetch(CONFIG.PROXY_URL, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok && !d.checkout_url) throw new Error(d.error || ('HTTP ' + r.status));
+  const seg = d.expires_at
+    ? Math.max(60, Math.floor((new Date(d.expires_at) - Date.now()) / 1000))
+    : (d.expires_in || 600);
+  return {
+    id: d.id || '',
+    emv: d.emv || '',
+    qr_url: d.qr_url || d.qr || '',
+    checkout_url: d.checkout_url || '',
+    aguardando: !!d.aguardando,
+    amount: payload.amount,
+    expires_in: seg
+  };
+}
+
+function pintarQR(charge){
+  const box = el('qrBox');
+  if (!box) return;
+  if (charge.qr_url) { box.innerHTML = `<img src="${esc(charge.qr_url)}" alt="QR Code Pix">`; return; }
+  if (charge.emv && window.QRCode) {
+    box.innerHTML = '';
+    new QRCode(box, { text: charge.emv, width: 190, height: 190, correctLevel: QRCode.CorrectLevel.M });
+  }
+}
+
+function abrirModal(charge){
+  const v = brl(charge.amount);
+  const temEmv = !!charge.emv;
+  const pronto = temEmv || !!charge.qr_url;
+
+  el('modal').innerHTML = `
+    <button class="modal-x" id="mX" aria-label="Fechar">×</button>
+    <h3>Pague com Pix</h3>
+    <div class="amt-big">R$ ${v}</div>
+    ${pronto ? '<div class="qr-box" id="qrBox"></div>'
+             : '<div class="modal-note" id="mStatus">O banco está preparando o seu Pix. Isso pode levar alguns segundos — não feche esta janela.</div>'}
+    ${temEmv ? `<div class="copy"><input id="emv" readonly value="${esc(charge.emv)}"><button id="copiar">Copiar</button></div>` : ''}
+    <div class="timer" id="mTimer">Expira em <b id="t">10:00</b></div>
+    ${pronto ? '<div class="modal-note">Abra o app do seu banco, escolha Pix › Ler QR Code ou Pix Copia e Cola, e cole o código acima.</div>'
+             : '<div class="modal-note">Se preferir, use o botão abaixo para pagar na página segura de pagamento.</div>'}
+    ${charge.checkout_url ? `<a class="btn-ghost" style="display:grid;place-items:center;margin-bottom:8px" href="${esc(charge.checkout_url)}" target="_blank" rel="noopener">Abrir página de pagamento</a>` : ''}
+    <button class="btn-ghost" id="jaPaguei">Já fiz o pagamento</button>
+    <div class="err" id="mErr"></div>
+    ${DEMO ? '<button class="demo on" id="simular">Modo demo: simular pagamento</button>' : ''}`;
+
+  if (pronto) pintarQR(charge);
+
+  el('overlay').classList.add('on');
+  el('mX').onclick = fechar;
+  if (el('copiar')) {
+    el('copiar').onclick = () => {
+      navigator.clipboard.writeText(charge.emv).catch(()=>{});
+      el('copiar').textContent = 'Copiado!';
+      setTimeout(() => el('copiar').textContent = 'Copiar', 2000);
+    };
+  }
+  el('jaPaguei').onclick = () => checar();
+  if (DEMO) el('simular').onclick = () => checar();
+  contar(state.restantes > 0 ? state.restantes : charge.expires_in);
+  clearInterval(state.poll);
+  if (!DEMO && charge.id) state.poll = setInterval(() => checar(true), 5000);
+}
+
+function contar(seg){
+  clearInterval(state.timer);
+  let t = Math.max(1, Math.round(seg || 600));
+  const pintar = () => {
+    state.restantes = t;
+    const b = el('t');
+    if (b) b.textContent = String(Math.floor(t/60)).padStart(2,'0') + ':' + String(t%60).padStart(2,'0');
+  };
+  pintar();
+  state.timer = setInterval(() => {
+    t--;
+    pintar();
+    if (t <= 0) { clearInterval(state.timer); fechar(); erro('O QR expirou. Gere um novo.'); }
+  }, 1000);
+}
+
+function avisoModal(msg){
+  const b = el('mErr');
+  if (b) { b.textContent = msg; b.classList.add('on'); } else erro(msg);
+}
+
+async function checar(silencioso){
+  if (state.pago || !state.charge) return;
+  if (DEMO) {
+    await new Promise(r => setTimeout(r, 400));
+    return sucesso();
+  }
+  state.tentativas++;
+  try {
+    const r = await fetch(`${CONFIG.POLL_URL}?id=${encodeURIComponent(state.charge.id)}`);
+    const d = await r.json();
+    const st = String(d.status || '').toLowerCase();
+    if (st === 'paid') return sucesso();
+    if (st === 'expired') { fechar(); return erro('O QR expirou. Gere um novo Pix.'); }
+    if (st === 'cancelled' || st === 'canceled') { fechar(); return erro('Essa cobrança foi cancelada. Gere um novo Pix.'); }
+    if (st === 'refunded') { fechar(); return erro('Essa cobrança foi estornada. Gere um novo Pix.'); }
+    if ((d.emv || d.qr_url) && !state.charge.emv) {
+      state.charge.emv = d.emv || '';
+      state.charge.qr_url = d.qr_url || '';
+      return abrirModal(state.charge);
+    }
+    if (!silencioso) avisoModal('Ainda não identificamos o pagamento. Se você já pagou, aguarde alguns segundos.');
+    else if (!state.charge.emv && state.tentativas === 6) {
+      const box = el('mStatus');
+      if (box) box.textContent = 'O banco ainda não liberou o Pix. Você pode esperar mais um pouco.';
+    }
+  } catch {
+    if (!silencioso) avisoModal('Não conseguimos consultar agora. Tente de novo em instantes.');
+  }
+}
+
+function sucesso(){
+  if (state.pago) return;
+  state.pago = true;
+  clearInterval(state.timer); clearInterval(state.poll);
+  const v = brl(state.charge.amount);
+  el('modal').innerHTML = `
+    <div class="ok-icon">✓</div>
+    <h3>Doação confirmada</h3>
+    <p style="font-size:14px;color:#6B7280;margin:8px 0 4px">Obrigado por ajudar a Maria Cecília.</p>
+    <div class="amt-big">R$ ${v}</div>
+    <p style="font-size:13px;color:#6B7280;margin-bottom:16px">O valor já entrou no total da campanha.</p>
+    <button class="btn-donate" id="okFechar">Fechar</button>`;
+  el('okFechar').onclick = fechar;
+  CONFIG.RAISED += Number(state.charge.amount);
+  CONFIG.DONORS += 1;
+  atualizar();
+  const lista = el('doacoes');
+  if (lista) {
+    const nome = el('nome').value.trim() || 'Anônimo';
+    const div = document.createElement('div');
+    div.className = 'donation';
+    div.innerHTML = `<div class="avatar">${esc(iniciais(nome))}</div>
+      <div class="donation-body"><div class="donation-head"><b>${esc(nome)}</b>
+      <span class="amt">R$ ${v}</span></div><time>agora mesmo</time></div>`;
+    lista.querySelector('h2').after(div);
+  }
+}
+
+function fechar(){ el('overlay').classList.remove('on'); clearInterval(state.timer); clearInterval(state.poll); }
+el('overlay').addEventListener('click', e => { if (e.target === el('overlay')) fechar() });
+
+function atualizar(){
+  const pct = Math.min(100, CONFIG.RAISED / CONFIG.GOAL * 100);
+  el('bar').style.width = pct + '%';
+  const txt = 'R$ ' + Math.round(CONFIG.RAISED).toLocaleString('pt-BR');
+  el('raised').textContent = txt;
+  el('mRaised').textContent = txt;
+  el('donors').textContent = CONFIG.DONORS;
+}
+
+function compartilhar(rede){
+  const url = encodeURIComponent(location.href);
+  const txt = encodeURIComponent('Ajude a Maria Cecília, 7 anos, a vencer a leucemia:');
+  window.open(rede === 'wa'
+    ? `https://wa.me/?text=${txt}%20${url}`
+    : `https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+renderAuth();
+atualizar();
+</script>
+</body>
+</html>

@@ -6,6 +6,26 @@
 <meta name="theme-color" content="#0BA05C">
 <title>Ajude a Maria Cecília a vencer o câncer | Vaquinha</title>
 <meta name="description" content="Maria Cecília tem 7 anos e está lutando contra a leucemia. Ajude com o tratamento, transporte e estadia longe de casa.">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1136949548709827');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', { content_name: 'Vakinha Maria Cecília', content_type: 'campanha' });
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1136949548709827&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect x='1.5' y='2.5' width='27' height='21' rx='6' fill='%230BA05C'/%3E%3Cpath d='M9 23.5V29l6.5-5.5z' fill='%230BA05C'/%3E%3Cpath d='M9.5 9.5 15 18l5.5-8.5' stroke='%23fff' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -531,7 +551,7 @@ const DEMO = !CONFIG.PROXY_URL;
 const el = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const brl = n => Number(n || 0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-const state = { valor: 50, charge: null, timer: null, poll: null, pago: false, restantes: 0, tentativas: 0 };
+const state = { valor: 50, charge: null, timer: null, poll: null, pago: false, restantes: 0, tentativas: 0, addInfo: false };
 
 const LS_A = 'vk_accounts', LS_S = 'vk_session';
 const ler = (k, f) => { try { return JSON.parse(localStorage.getItem(k)) ?? f } catch { return f } };
@@ -738,10 +758,12 @@ el('btnDoar').addEventListener('click', async () => {
   const msg = validar();
   if (msg) return erro(msg);
   erro('');
+  if (window.fbq) fbq('track', 'InitiateCheckout', { value: Number(state.valor.toFixed(2)), currency: 'BRL' });
   el('btnDoar').disabled = true;
   el('btnDoar').textContent = 'Gerando Pix...';
   state.restantes = 0;
   state.tentativas = 0;
+  state.addInfo = false;
   try {
     const charge = await criarCobranca({
       amount: Number(state.valor.toFixed(2)),
@@ -824,6 +846,10 @@ function abrirModal(charge){
   if (pronto) pintarQR(charge);
 
   el('overlay').classList.add('on');
+  if (window.fbq && !state.addInfo) {
+    state.addInfo = true;
+    fbq('track', 'AddPaymentInfo', { value: Number(charge.amount), currency: 'BRL' });
+  }
   el('mX').onclick = fechar;
   if (el('copiar')) {
     el('copiar').onclick = () => {
@@ -894,6 +920,7 @@ function sucesso(){
   if (state.pago) return;
   state.pago = true;
   clearInterval(state.timer); clearInterval(state.poll);
+  if (window.fbq) fbq('track', 'Purchase', { value: Number(state.charge.amount), currency: 'BRL' });
   const v = brl(state.charge.amount);
   el('modal').innerHTML = `
     <div class="ok-icon">✓</div>
